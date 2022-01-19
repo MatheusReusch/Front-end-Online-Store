@@ -92,7 +92,12 @@ class ProductsList extends React.Component {
             <h2>{produto.title}</h2>
             <img alt="imagem" src={ produto.thumbnail } />
             <h3>{produto.price}</h3>
-            <Link to={`/cart/${produto.id}`} data-testid="product-detail-link">Mais detalhes</Link>
+            <Link
+              to={ `/cart/${produto.id}` }
+              data-testid="product-detail-link"
+            >
+              Mais detalhes
+            </Link>
           </div>
         ))}
       </>
