@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import propTypes from 'prop-types';
 import { getCategories } from './services/api';
 
 class ProductsList extends React.Component {
@@ -83,7 +84,7 @@ class ProductsList extends React.Component {
           ''
         )}
         <Link to="/cart" data-testid="shopping-cart-button">
-            Carrinho
+          Carrinho
         </Link>
         {products.map((produto) => (
           <div data-testid="product" key={ Math.random() }>
@@ -96,12 +97,22 @@ class ProductsList extends React.Component {
             >
               Mais detalhes
             </Link>
-            <button onClick={ () => addCartItem(produto.id) } data-testid="product-add-to-cart" type="button">Adicionar ao Carrinho</button>
+            <button
+              onClick={ () => addCartItem(produto.id) }
+              data-testid="product-add-to-cart"
+              type="button"
+            >
+              Adicionar ao Carrinho
+            </button>
           </div>
         ))}
       </>
     );
   }
 }
+
+ProductsList.propTypes = {
+  addCartItem: propTypes.func.isRequired,
+};
 
 export default ProductsList;
