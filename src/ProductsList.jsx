@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { getCategories, getProductsFromCategoryAndQuery } from './services/api';
+import { getCategories } from './services/api';
 
 class ProductsList extends React.Component {
   constructor() {
@@ -22,10 +22,12 @@ class ProductsList extends React.Component {
     this.setState({ categories: [...categorias] });
   };
 
-  fetchProducts = async (event, input) => {
-    const categoria = event.target.innerHTML;
-    const produtos = await getProductsFromCategoryAndQuery(categoria, input);
-    this.setState({ products: [...produtos.results] });
+  fetchProducts = async (event) => {
+    const categoriaID = event.target.nextSibling.innerHTML;
+    console.log(categoriaID);
+    fetch(`https://api.mercadolibre.com/sites/MLB/search?category=${categoriaID}`)
+      .then((response) => response.json())
+      .then((data) => this.setState({ products: [...data.results] }));
   };
 
   fetchProduct = () => {
@@ -69,14 +71,17 @@ class ProductsList extends React.Component {
             </Link>
             {categories.length > 0
               && categories.map((categoria) => (
-                <button
-                  onClick={ (event) => this.fetchProducts(event, input) }
-                  type="button"
-                  key={ categoria.id }
-                  data-testid="category"
-                >
-                  {categoria.name}
-                </button>
+                <div key={ Math.random() }>
+                  <button
+                    onClick={ (event) => this.fetchProducts(event) }
+                    type="button"
+                    key={ categoria.id }
+                    data-testid="category"
+                  >
+                    {categoria.name}
+                  </button>
+                  <h2 style={ { display: 'none' } }>{categoria.id}</h2>
+                </div>
               ))}
           </section>
         ) : (
