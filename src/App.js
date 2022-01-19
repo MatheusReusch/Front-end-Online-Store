@@ -7,11 +7,9 @@ import ProductsList from './ProductsList';
 class App extends React.Component {
   render() {
     return (
-      <>
-        <BrowserRouter>
-         <Route exact path="/" component={ ProductsList }></Route>
-        </BrowserRouter>
-      </>
+      <BrowserRouter>
+        <Route exact path="/" component={ ProductsList } />
+      </BrowserRouter>
     );
   }
 }
