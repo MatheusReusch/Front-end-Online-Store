@@ -12,22 +12,34 @@ class App extends React.Component {
 
     this.state = {
       cartItems: [],
-    }
+    };
   }
 
   addCartItem = (productId) => {
     fetch(`https://api.mercadolibre.com/items/${productId}`)
       .then((response) => response.json())
-      .then((data) => this.setState((prevState) => ({ cartItems: [...prevState.cartItems, data] })));
-  }
-  
+      .then((data) => this.setState((prevState) => ({
+        cartItems: [...prevState.cartItems, data],
+      })));
+  };
+
   render() {
     const { cartItems } = this.state;
     return (
       <BrowserRouter>
-        <Route exact path="/" render={() => <ProductsList addCartItem={ this.addCartItem } />} />
-        <Route exact path="/cart" render={() => <Cart items={ cartItems } /> } />
-        <Route exact path='/cart/:id' component={ Details }></Route>
+        <Route
+          exact
+          path="/"
+          render={ () => <ProductsList addCartItem={ this.addCartItem } /> }
+        />
+        <Route exact path="/cart" render={ () => <Cart items={ cartItems } /> } />
+        <Route
+          exact
+          path="/cart/:id"
+          render={ (props) => (
+            <Details { ...props } addCartItem={ this.addCartItem } />
+          ) }
+        />
       </BrowserRouter>
     );
   }
