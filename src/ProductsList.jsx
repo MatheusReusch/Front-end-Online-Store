@@ -44,9 +44,11 @@ class ProductsList extends React.Component {
 
   render() {
     const { products, categories, input } = this.state;
+    const { addCartItem } = this.props;
     console.log(products.map((produto) => console.log(produto.title)));
     return (
       <>
+      <Link to="/cart">Carrinho</Link>
         <input
           data-testid="query-input"
           onChange={ this.handleChange }
@@ -98,6 +100,7 @@ class ProductsList extends React.Component {
             >
               Mais detalhes
             </Link>
+            <button onClick={ () => addCartItem(produto.id) } data-testid="product-add-to-cart" type="button">Adicionar ao Carrinho</button>
           </div>
         ))}
       </>

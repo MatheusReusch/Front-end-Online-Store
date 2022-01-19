@@ -7,12 +7,27 @@ import Cart from './Cart';
 import Details from './Details';
 
 class App extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      cartItems: [],
+    }
+  }
+
+  addCartItem = (productId) => {
+    fetch(`https://api.mercadolibre.com/items/${productId}`)
+      .then((response) => response.json())
+      .then((data) => this.setState((prevState) => ({ cartItems: [...prevState.cartItems, data] })));
+  }
+  
   render() {
+    const { cartItems } = this.state;
     return (
       <BrowserRouter>
-        <Route exact path="/" component={ ProductsList } />
-        <Route exact path="/cart" component={ Cart } />
-        <Route exact path="/cart/:id" component={ Details } />
+        <Route exact path="/" render={() => <ProductsList addCartItem={ this.addCartItem } />} />
+        <Route exact path="/cart" render={() => <Cart items={ cartItems } /> } />
+        <Route exact path='/cart/:id' component={ Details }></Route>
       </BrowserRouter>
     );
   }
