@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 class ProductsList extends React.Component {
   constructor() {
@@ -15,9 +16,12 @@ class ProductsList extends React.Component {
       <>
         <input type="text" />
         {products.length === 0 ? (
-          <h2 data-testid="home-initial-message">
-            Digite algum termo de pesquisa ou escolha uma categoria.
-          </h2>
+          <section>
+            <h2 data-testid="home-initial-message">
+              Digite algum termo de pesquisa ou escolha uma categoria.
+            </h2>
+            <Link to="/cart" data-testid="shopping-cart-button">Carrinho</Link>
+          </section>
         ) : (
           ''
         )}
