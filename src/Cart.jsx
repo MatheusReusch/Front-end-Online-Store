@@ -12,7 +12,7 @@ class Cart extends React.Component {
    
     quantity = (id) => {
     const { items } = this.props;
-    let quantidade = 1;
+    let quantidade = 0;
     items.map((item) => {
       if (item.id === id) {
         quantidade++
@@ -24,6 +24,24 @@ class Cart extends React.Component {
    
    verifica = (item) => {
     const { array } = this.state;
+    const quantidade = this.quantity(item.id)
+    if (array.length > 0) {
+        if (array.some((it) => it === item.id)) {
+            return '';
+        } else if (array.some((it) => it === item.id) === false) {
+            return <section>
+            <h2 data-testid="shopping-cart-product-name">{item.title}</h2>
+            <h2 data-testid="shopping-cart-product-quantity">{quantidade}</h2>
+        </section>
+        }
+    } else {
+        return <section key={ Math.random() }>
+        <h2 data-testid="shopping-cart-product-name">{item.title}</h2>
+        <h2 data-testid="shopping-cart-product-quantity">{quantidade}</h2>
+    </section>
+    }
+    this.setState((prevState) => ({ array: [prevState.array, item.id]}))
+    /*const { array } = this.state;
     const jaExiste = array.length > 0 ? array.some((it) => it === item.id) : '';
     if ( jaExiste ) {
         console.log('Chegou emcima')
@@ -35,9 +53,10 @@ class Cart extends React.Component {
             <h2 data-testid="shopping-cart-product-quantity">{quantidade}</h2>
         </section>
     }
-    const array2 = this.state.array;
-    console.log(array2);
-    this.setState((prevState) => ({ array: array2.push(item.id) }));
+    this.setState((prevState) => ({ array: [...prevState.array, item.id]}));
+    console.log(this.state.array);
+    const array2 = this.state.array.slice(this.state.array.length / 2);
+    console.log(array2); */
    }
 
     render() {
