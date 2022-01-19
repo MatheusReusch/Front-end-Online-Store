@@ -14,7 +14,6 @@ class ProductsList extends React.Component {
 
   async componentDidMount() {
     const categorias = await getCategories();
-    console.log(categorias);
     this.setStateCategories(categorias);
   }
 
@@ -24,7 +23,6 @@ class ProductsList extends React.Component {
 
   fetchProducts = async (event) => {
     const categoriaID = event.target.nextSibling.innerHTML;
-    console.log(categoriaID);
     fetch(`https://api.mercadolibre.com/sites/MLB/search?category=${categoriaID}`)
       .then((response) => response.json())
       .then((data) => this.setState({ products: [...data.results] }));
@@ -44,7 +42,7 @@ class ProductsList extends React.Component {
 
   render() {
     const { products, categories, input } = this.state;
-    console.log(products.map((produto) => console.log(produto.title)));
+    const { addCartItem } = this.props;
     return (
       <>
         <input
@@ -66,9 +64,6 @@ class ProductsList extends React.Component {
             <h2 data-testid="home-initial-message">
               Digite algum termo de pesquisa ou escolha uma categoria.
             </h2>
-            <Link to="/cart" data-testid="shopping-cart-button">
-              Carrinho
-            </Link>
             {categories.length > 0
               && categories.map((categoria) => (
                 <div key={ Math.random() }>
@@ -87,6 +82,9 @@ class ProductsList extends React.Component {
         ) : (
           ''
         )}
+        <Link to="/cart" data-testid="shopping-cart-button">
+            Carrinho
+        </Link>
         {products.map((produto) => (
           <div data-testid="product" key={ Math.random() }>
             <h2>{produto.title}</h2>
@@ -98,6 +96,7 @@ class ProductsList extends React.Component {
             >
               Mais detalhes
             </Link>
+            <button onClick={ () => addCartItem(produto.id) } data-testid="product-add-to-cart" type="button">Adicionar ao Carrinho</button>
           </div>
         ))}
       </>
