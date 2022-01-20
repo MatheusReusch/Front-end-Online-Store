@@ -7,6 +7,7 @@ class Cart extends React.Component {
 
     this.state = {
       array: [],
+      total: 0,
     };
   }
 
@@ -22,9 +23,23 @@ class Cart extends React.Component {
       return quantidade;
     }
 
+    adiciona = (quantidade, id) => {
+      let valor = document.getElementById(id).innerText;
+      console.log(valor);
+      document.getElementById(id).innerText -= (-quantidade);
+    }
+
+    remover = (quantidade, id) => {
+      let valor = document.getElementById(id).innerText;
+      console.log(valor);
+      if (document.getElementById(id).innerText > 0) {
+        document.getElementById(id).innerText -= (quantidade);
+      }
+    }
+
    verifica = (item) => {
      const { array } = this.state;
-     const quantidade = this.quantity(item.id);
+     let quantidade = this.quantity(item.id);
      if (array.length > 0) {
        if (array.some((it) => it === item.id)) {
          return '';
@@ -33,25 +48,39 @@ class Cart extends React.Component {
            <section>
              <h2 data-testid="shopping-cart-product-name">{item.title}</h2>
              <h2 data-testid="shopping-cart-product-quantity">{quantidade}</h2>
+             <button onClick={ () => quantidade += 1 } data-testid="product-increase-quantity">Adiciona</button>
+             <button data-testid="product-decrease-quantity">Retira</button>
            </section>);
        }
      } else {
        return (
-         <section key={ Math.random() }>
+         <section data-testid="teste" key={ Math.random() }>
            <h2 data-testid="shopping-cart-product-name">{item.title}</h2>
-           <h2 data-testid="shopping-cart-product-quantity">{quantidade}</h2>
+           <h2 id={ item.id } data-testid="shopping-cart-product-quantity">{quantidade}</h2>
+           <button onClick={ () => this.adiciona(quantidade, item.id) } data-testid="product-increase-quantity">Adiciona</button>
+           <button onClick={ () => this.remover(quantidade, item.id) } data-testid="product-decrease-quantity">Retira</button>
          </section>);
      }
-     this.setState((prevState) => ({ array: [prevState.array, item.id] }));
+   }
+
+   componentDidMount() {
+    let total = 0;
+    const { items } = this.props;
+    items.map((item) => total += item.price);
+    this.setState({ total: total });
    }
 
    render() {
      const { items } = this.props;
+     const { total } = this.state;
      return (
        <section>
          {items.length === 0
            ? <h2 data-testid="shopping-cart-empty-message">Seu carrinho está vazio</h2>
-           : items.map((item) => this.verifica(item))}
+           : items.map((item) => {
+            return this.verifica(item)
+             })}
+           {total}
        </section>
      );
    }
