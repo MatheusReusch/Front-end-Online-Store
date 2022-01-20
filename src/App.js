@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import ProductsList from './ProductsList';
 import Cart from './Cart';
 import Details from './Details';
+import Checkout from './Checkout';
 
 class App extends React.Component {
   constructor() {
@@ -30,16 +31,23 @@ class App extends React.Component {
         <Route
           exact
           path="/"
-          render={ () => <ProductsList addCartItem={ this.addCartItem } /> }
+          render={ () => (
+            <ProductsList items={ cartItems } addCartItem={ this.addCartItem } />
+          ) }
         />
         <Route exact path="/cart" render={ () => <Cart items={ cartItems } /> } />
         <Route
           exact
           path="/cart/:id"
           render={ (props) => (
-            <Details { ...props } addCartItem={ this.addCartItem } />
+            <Details
+              { ...props }
+              items={ cartItems }
+              addCartItem={ this.addCartItem }
+            />
           ) }
         />
+        <Route path="/checkout" component={ Checkout } />
       </BrowserRouter>
     );
   }

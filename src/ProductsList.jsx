@@ -43,7 +43,8 @@ class ProductsList extends React.Component {
 
   render() {
     const { products, categories, input } = this.state;
-    const { addCartItem } = this.props;
+    const { addCartItem, items } = this.props;
+    console.log(items);
     return (
       <>
         <input
@@ -86,11 +87,14 @@ class ProductsList extends React.Component {
         <Link to="/cart" data-testid="shopping-cart-button">
           Carrinho
         </Link>
+        <h2 data-testid="shopping-cart-size">{items !== undefined && 2}</h2>
         {products.map((produto) => (
           <div data-testid="product" key={ Math.random() }>
             <h2>{produto.title}</h2>
             <img alt="imagem" src={ produto.thumbnail } />
             <h3>{produto.price}</h3>
+            {produto.shipping.free_shipping
+              && <h2 data-testid="free-shipping">Frete Grátis</h2>}
             <Link
               to={ `/cart/${produto.id}` }
               data-testid="product-detail-link"
@@ -113,6 +117,7 @@ class ProductsList extends React.Component {
 
 ProductsList.propTypes = {
   addCartItem: propTypes.func.isRequired,
+  items: propTypes.arrayOf(propTypes.object).isRequired,
 };
 
 export default ProductsList;
